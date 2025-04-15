@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Dashboard</title>
+</head>
+<body>
+
+    <h1 id="Dateactuelle"></h1>
+    <div class="date" id="Heureactuelle"></div>
+
+    <div class="todo-container">
+        <h2>To Do List</h2>
+        <ul id="todoList"></ul>
+        <input type="text" id="elementajoute" placeholder="Ajouter une tâche">
+        <button onclick="AjouterElement()">Ajouter</button>
+    </div>
+
+    <div class="habitudes">
+        <h2>Habitudes</h2>
+        <ul id="listehabitudes"></ul>
+        <input type="text" id="habitude_ajoute" placeholder="Ajouter une habitude">
+        <button onclick="AjouerHabitude()">Ajouter</button>
+    </div>
+
+    <button onclick="connect()">Se connecter</button>
+    
+</body>
+</html>
