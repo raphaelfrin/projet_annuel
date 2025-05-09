@@ -1,0 +1,31 @@
+<?php session_start(); ?>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <title>Document</title>
+</head>
+<header>
+    <div id="conn">
+        <?php if (isset($_SESSION['Prenom'])): ?>
+            <a id="profile" href="profile.php"><?= htmlspecialchars($_SESSION['Prenom']); ?></a>
+            <a id="cree" href="deconnection.php">Se déconnecter</a>
+        <?php else: ?>
+            <a id="conne" href="connectioncompte.php">Se connecter</a>
+            <a id="cree" href="creationcompte.php">crée un compte</a>
+        <?php endif; ?>
+    </div>
+
+    <nav>
+        <a href="index.php">dashbord</a>
+        <a href="tasks.php">tache</a>
+        <a href="habitude.php">habitude</a>
+        <a href="entreprise.php">entreprise</a>
+    </nav>
+</header>
+<body>
+
+</body>
+</html>
