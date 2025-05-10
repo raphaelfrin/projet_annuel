@@ -1,45 +1,69 @@
-document.getElementById("current_date").value = new Date();
-function ChangerDate() {
-            const now = new Date();
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            document.getElementById('Dateactuelle').textContent = now.toLocaleDateString('fr-FR', options);
-            document.getElementById('Heureactuelle').textContent = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+const monthNames = [
+  "Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
+  "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
+];
+
+let currentDate = new Date();
+
+function updateMonthYearDisplay(month, year) {
+  const monthYear = document.getElementById("monthYear");
+  monthYear.innerText = `${monthNames[month]} ${year}`;
+}
+
+function createCalendar(month, year) {
+  const calendar = document.querySelector("#calendar");
+  calendar.innerHTML = "";
+
+  const today = new Date();
+  const isCurrentMonth = today.getMonth() === month && today.getFullYear() === year;
+
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const firstDay = new Date(year, month, 1).getDay();
+  let date = 1;
+
+  for (let i = 0; i < 6; i++) {
+    const row = document.createElement("tr");
+
+    for (let j = 0; j < 7; j++) {
+      const cell = document.createElement("td");
+
+      if (i === 0 && j < firstDay) {
+        cell.classList.add("inactive");
+      } else if (date > daysInMonth) {
+        cell.classList.add("inactive");
+      } else {
+        cell.innerText = date;
+        cell.classList.add("active-day");
+
+        if (isCurrentMonth && date === today.getDate()) {
+          cell.classList.add("today");
         }
 
-        function AjouterElement() {
-            const ajout = document.getElementById('elementajoute');
-            const nouvel_element = ajout.value;
-            if (nouvel_element) {
-                const li = document.createElement('li');
-                li.innerHTML = `<input type="checkbox" onclick="MarquerOk(newTodo)`;
-                document.getElementById('todoList').appendChild(li);
-                input.value = '';
-            }
-        }
+        date++;
+      }
 
-        function MarquerOk(checkbox) {
-            if (checkbox.checked) {
-                checkbox.parentElement.style.textDecoration = "line-through";
-            } else {
-                checkbox.parentElement.style.textDecoration = "none";
-            }
-        }
+      row.appendChild(cell);
+    }
 
-        function AjouterHabitude() {
-            const ajout_habitude = document.getElementById('habitude_ajoute');
-            const nouvelle_habitude = ajout_habitude.value;
-            if (nouvelle_habitude) {
-                const li = document.createElement('li');
-                li.textContent =  nouvelle_habitude;
-                document.getElementById('ListeHabitudes').appendChild(li);
-                input.value = '';
-            }
-        }
+    calendar.appendChild(row);
+  }
 
-        function connect() {
-            alert("Connexion en cours...");
-        }
+  updateMonthYearDisplay(month, year);
+}
 
-        ChangerDate();
-// Pour changer chaque minutes
-        setInterval(ChangerDate, 60000);
+
+document.addEventListener("DOMContentLoaded", function () {
+  createCalendar(currentDate.getMonth(), currentDate.getFullYear());
+
+  document.getElementById("prevMonth").addEventListener("click", function () {
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    createCalendar(currentDate.getMonth(), currentDate.getFullYear());
+  });
+
+  document.getElementById("nextMonth").addEventListener("click", function () {
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    createCalendar(currentDate.getMonth(), currentDate.getFullYear());
+  });
+});
+
+
