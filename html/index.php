@@ -23,12 +23,9 @@
             <?php endif; ?>
         </div>
 
-        <nav>
-            <a href="index.php">dashbord</a>
-            <a href="tasks.php">tâche</a>
-            <a href="habitude.php">habitude</a>
-            <a href="entreprise.php">entreprise</a>
-        </nav>
+<?php
+include '../elements/nav.php';        
+?>
     </header>
 
     <section class="calendar-container">

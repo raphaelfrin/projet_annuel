@@ -12,12 +12,9 @@
         <a id="cree" href="signup.php">Créer un compte</a>
     </div>
 
-    <nav>
-        <a href="index.php">dashbord</a>
-        <a href="tasks.php">tache</a>
-        <a href="habitude.php">habitude</a>
-        <a href="entreprise.php">entreprise</a>
-    </nav>
+    <?php
+include '../elements/nav.php';
+    ?>
 </header>
 
 <body>
