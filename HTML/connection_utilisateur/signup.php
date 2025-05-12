@@ -4,9 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/style.css">
-    <title>Boostly - Connexion</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../script/script.js"></script>
+    <title>Boostly-creation de compte</title>
 </head>
+
 <header>
     <div id="conn">
         <a id="conne" href="login.php">Se connecter</a>
@@ -23,7 +25,7 @@ include '../elements/nav.php';
         <p>Votre site tout-en-un pour booster votre productivité quotidienne</p>
 
         <div id="créate">
-            <form action="traitement_inscription.php" method="POST">
+            <form action="../traitement/traitement_inscription.php" method="POST">
                 <h2>Formulaire d'inscription</h2>
                 <div class="form-group">
                     <label for="Nom"> Nom :</label>

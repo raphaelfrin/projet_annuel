@@ -3,29 +3,29 @@
 <html lang="fr">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv=" X-UA-Compatible" content="IE=edge" <meta name="viewport"
-        content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../css/style.css" />
-    <script src="../script/script.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../script/script.js"></script>
     <title>Boostly</title>
 </head>
+
 
 <body>
     <header>
         <div id="conn">
             <?php if (isset($_SESSION['Prenom'])): ?>
-                <a id="profile" href="profile.php"><?= htmlspecialchars($_SESSION['Prenom']); ?></a>
-                <a id="cree" href="deconnection.php">Se déconnecter</a>
+                <a id="profile" href="../connection_utilisateur/profile.php"><?= htmlspecialchars($_SESSION['Prenom']); ?></a>
+                <a id="cree" href="../connection_utilisateur/deconnection.php">Se déconnecter</a>
             <?php else: ?>
-                <a id="conne" href="login.php">Se connecter</a>
-                <a id="cree" href="signup.php">Créer un compte</a>
+                <a id="conne" href="../connection_utilisateur/login.php">Se connecter</a>
+                <a id="cree" href="../connection_utilisateur/signup.php">Créer un compte</a>
             <?php endif; ?>
         </div>
 
-<?php
-include '../elements/nav.php';        
-?>
+        <?php
+        include '../elements/nav.php';
+        ?>
     </header>
 
     <section class="calendar-container">

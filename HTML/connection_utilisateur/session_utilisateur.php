@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("conn.php");
+include("../elements/conn.php");
 
 if (isset($_POST['mail'], $_POST['mdp'])) {
     $mail = $_POST['mail'];
@@ -15,14 +15,14 @@ if (isset($_POST['mail'], $_POST['mdp'])) {
         $_SESSION['Nom'] = $user['Nom'];
         $_SESSION['Prenom'] = $user['Prenom'];
         $_SESSION['ddn'] = $user['ddn'];
-        header("Location: index.php");
+        header("Location: ../page/index.php");
         exit;
     } else {
-        header("Location: login.php?error=1");
+        header("Location: ../connection_utilisateur/login.php?error=1");
         exit;
     }
 } else {
-    header("Location: login.php?error=2");
+    header("Location: ../connection_utilisateur/login.php?error=2");
     exit;
 }
 ?>

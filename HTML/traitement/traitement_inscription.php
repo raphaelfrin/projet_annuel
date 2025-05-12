@@ -1,5 +1,5 @@
 <?php
-include 'conn.php';
+include '../elements/conn.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $conn->prepare($sql);
     $stmt->execute([$nom, $prenom, $mail, $ddn, $mdp]);
 
-    header('Location: login.php');
+    header('Location: ../connection_utilisateur/login.php');
 } else {
     echo "Formulaire non soumis.";
 }

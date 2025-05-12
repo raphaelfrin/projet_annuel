@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/style.css">
-    <title>Boostly - Connexion</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../script/script.js"></script>
+    <title>Boostly-connection</title>
 </head>
 <header>
     <div id="conn">
@@ -13,7 +14,7 @@
     </div>
 
     <?php
-include '../elements/nav.php';
+    include '../elements/nav.php';
     ?>
 </header>
 

@@ -1,6 +1,16 @@
 const monthNames = [
-  "Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
-  "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
+  "Janvier",
+  "Février",
+  "Mars",
+  "Avril",
+  "Mai",
+  "Juin",
+  "Juillet",
+  "Août",
+  "Septembre",
+  "Octobre",
+  "Novembre",
+  "Décembre",
 ];
 
 let currentDate = new Date();
@@ -15,7 +25,8 @@ function createCalendar(month, year) {
   calendar.innerHTML = "";
 
   const today = new Date();
-  const isCurrentMonth = today.getMonth() === month && today.getFullYear() === year;
+  const isCurrentMonth =
+    today.getMonth() === month && today.getFullYear() === year;
 
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const firstDay = new Date(year, month, 1).getDay();
@@ -51,7 +62,6 @@ function createCalendar(month, year) {
   updateMonthYearDisplay(month, year);
 }
 
-
 document.addEventListener("DOMContentLoaded", function () {
   createCalendar(currentDate.getMonth(), currentDate.getFullYear());
 
@@ -66,4 +76,10 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-
+var $dialog = document.getElementById("mydialog");
+if (!("show" in $dialog)) {
+  // fallback si dialog non supporté
+}
+$dialog.addEventListener("close", function () {
+  console.log("Fermeture. ", this.returnValue);
+});
