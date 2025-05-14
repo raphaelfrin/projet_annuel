@@ -1,20 +1,22 @@
 <?php
+session_start();
 include '../elements/conn.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $nom = isset($_POST['Nom']) ? trim($_POST['Nom']) : '';
+    $nom = isset($_POST['nom']) ? trim($_POST['nom']) : '';
     $tag = isset($_POST['tag']) ? trim($_POST['tag']) : '';
-    $occurence = isset($_POST['DDN']) ? $_POST['DDN'] : '';
-    $id_utilisateur = isset($_POST['id_utilisateur']) ? $_POST['id_utilisateur'] : '';
+    $heure = isset($_POST['heure']) ? trim($_POST['heure']) . ':00' : '';
+    $occurence = isset($_POST['occurence']) ? trim($_POST['occurence']) : '';
+    $id_utilisateur = $_SESSION['id_utilisateur'];
 
-
-
-    $sql = "INSERT INTO habitude (Nom_habitude, Tag, Occurence, id_utilisateur) VALUES (?, ?, ?, ?)";
+    $sql = "INSERT INTO habitude (Nom_habitude, Tag, Heure, Occurence, id_utilisateur) VALUES (?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->execute([$nom, $tag, $dateTime, $id_utilisateur]);
+    $stmt->execute([$nom, $tag, $heure, $occurence, $id_utilisateur]);
 
-    header('Location: ../connection_utilisateur/login.php');
+    header('Location: ../page/habitude.php');
+    exit();
 } else {
     echo "Formulaire non soumis.";
 }
+?>

@@ -153,3 +153,36 @@ td {
   background-color: #eaeaea;
   color: #aaa;
 }
+.titre_habitude {
+  font-size: 2.5em;
+  text-align: center;
+}
+
+.boutons_habitude {
+  text-align: center;
+}
+
+.boutons_habitude button {
+  font-size: 18px;
+  width: 200px;
+  height: 60px;
+  border-radius: 12px;
+}
+
+.container-habitudes {
+  padding: 85px;
+  padding-top: 60px;
+  display: flex;
+  flex-wrap: wrap; /* Permet de revenir à la ligne */
+  gap: 20px; /* Espacement entre les éléments */
+  justify-content: flex-start; /* Alignement horizontal */
+}
+
+.habitude {
+  background-color: #e0f7fa;
+  padding: 15px;
+  border: 1px solid #ccc;
+  width: 250px; /* Largeur fixe */
+  box-sizing: border-box;
+  border-radius: 8px;
+}

@@ -76,10 +76,39 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-var $dialog = document.getElementById("mydialog");
-if (!("show" in $dialog)) {
-  // fallback si dialog non supporté
-}
-$dialog.addEventListener("close", function () {
-  console.log("Fermeture. ", this.returnValue);
+document.addEventListener("DOMContentLoaded", function () {
+  const dialog = document.getElementById("mydialog");
+  const openBtn = document.querySelector(".boutons_habitude button");
+
+  let ignoreNextClick = false;
+
+  openBtn.addEventListener("click", function () {
+    dialog.showModal();
+    ignoreNextClick = true;
+  });
+
+  document.addEventListener("click", function (event) {
+    if (!dialog.open) return;
+
+    // Ignore le premier clic (celui qui ouvre la modale)
+    if (ignoreNextClick) {
+      ignoreNextClick = false;
+      return;
+    }
+
+    const rect = dialog.getBoundingClientRect();
+    const isInDialog =
+      event.clientX >= rect.left &&
+      event.clientX <= rect.right &&
+      event.clientY >= rect.top &&
+      event.clientY <= rect.bottom;
+
+    if (!isInDialog) {
+      dialog.close();
+    }
+  });
+
+  dialog.addEventListener("close", function () {
+    console.log("Fermeture.");
+  });
 });

@@ -6,7 +6,7 @@ Change NULL to port number to use DBMS other than the default using port 3306
 $servername = '127.0.0.1';
 $user = 'root';
 $password = ''; //To be completed if you have set a password to root
-$database = 'proj_annuelle'; //To be completed to connect to a database. The database must exist.
+$database = 'projet_annuel'; //To be completed to connect to a database. The database must exist.
 $port = NULL; //Default must be NULL to use default port
 //Utlisation de MySQLI proédural
 try{
