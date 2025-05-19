@@ -69,13 +69,22 @@
             // Inclusion du fichier de connexion à la base de données
             include '../elements/conn.php';
 
+            if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
+                $id_to_delete = $_POST['delete_id'];
+
+                // Requête pour supprimer l'habitude
+                $delete_sql = "DELETE FROM habitude WHERE id_habitude = ? AND id_utilisateur = ?";
+                $delete_stmt = $conn->prepare($delete_sql);
+                $delete_stmt->execute([$id_to_delete, $_SESSION['id_utilisateur']]);
+            }
+
             // Vérification si l'utilisateur est bien connecté
             if (isset($_SESSION['id_utilisateur'])) {
                 // Récupération de l'ID de l'utilisateur depuis la session
                 $id_utilisateur = $_SESSION['id_utilisateur'];
 
                 // Requête SQL pour récupérer toutes les habitudes de l'utilisateur
-                $sql = "SELECT id_habitude Nom_habitude, Tag, heure, Occurence, actif FROM `habitude` WHERE id_utilisateur = ? AND habitude_entreprise IS NULL;";
+                $sql = "SELECT id_habitude, Nom_habitude, Tag, heure, Occurence, actif FROM `habitude` WHERE id_utilisateur = ? AND habitude_entreprise IS NULL;";
 
                 // Préparation de la requête
                 $stmt = $conn->prepare($sql);
@@ -93,6 +102,11 @@
                         echo "<p>Tag : " . htmlspecialchars($habitude['Tag']) . "</p>";
                         echo "<p>Heure : " . htmlspecialchars($habitude['heure']) . "</p>";
                         echo "<p>Occurence : " . htmlspecialchars($habitude['Occurence']) . "</p>";
+                        // Formulaire pour le bouton
+                        echo "<form method='POST' onsubmit='return confirm(\"Supprimer cette habitude ?\")'>";
+                        echo "<input type='hidden' name='delete_id' value='" . $habitude['id_habitude'] . "'>";
+                        echo "<button type='submit'>Supprimer</button>";
+                        echo "</form>";
                         echo "</div>";
                     }
                 } else {
