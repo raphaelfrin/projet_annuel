@@ -112,3 +112,25 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("Fermeture.");
   });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    const editButtons = document.querySelectorAll(".edit-button");
+
+    editButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            const id = button.dataset.id;
+            const nom = button.dataset.nom;
+            const tag = button.dataset.tag;
+            const heure = button.dataset.heure;
+            const occurence = button.dataset.occurence;
+
+            document.getElementById('edit-id').value = id;
+            document.getElementById('edit-nom').value = nom;
+            document.getElementById('edit-tag').value = tag;
+            document.getElementById('edit-heure').value = heure;
+            document.getElementById('edit-occurence').value = occurence;
+
+            document.getElementById('editDialog').showModal();
+        });
+    });
+});

@@ -59,65 +59,160 @@
                     </div>
                 </form>
             </dialog>
+            <dialog id="editDialog">
+                <h2>Modifier une habitude</h2>
+                <form action="../traitement/modifier_habitude.php" method="post">
+                    <input type="hidden" name="id" id="edit-id">
+                    <div class="form-group">
+                        <label>Nom :</label>
+                        <input type="text" name="nom" id="edit-nom" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Tag :</label>
+                        <input type="text" name="tag" id="edit-tag" />
+                    </div>
+                    <div class="form-group">
+                        <label>Heure :</label>
+                        <input type="time" name="heure" id="edit-heure" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Occurence :</label>
+                        <select name="occurence" id="edit-occurence" required>
+                            <option value="quotidienne">Quotidienne</option>
+                            <option value="hebdomadaire">Hebdomadaire</option>
+                            <option value="mensuelle">Mensuelle</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit">Enregistrer les modifications</button>
+                    </div>
+                </form>
+            </dialog>
             <div class="boutons_habitude">
                 <button onclick="document.getElementById('mydialog').showModal()">Ajouter une
                     habitude</button>
             </div>
         </div>
-        <div class="container-habitudes">
-            <?php
-            // Inclusion du fichier de connexion à la base de données
-            include '../elements/conn.php';
+        <?php
+        // Inclusion du fichier de connexion à la base de données
+        include '../elements/conn.php';
 
-            if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
-                $id_to_delete = $_POST['delete_id'];
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
+            $id_to_delete = $_POST['delete_id'];
 
-                // Requête pour supprimer l'habitude
-                $delete_sql = "DELETE FROM habitude WHERE id_habitude = ? AND id_utilisateur = ?";
-                $delete_stmt = $conn->prepare($delete_sql);
-                $delete_stmt->execute([$id_to_delete, $_SESSION['id_utilisateur']]);
-            }
+            // Requête pour supprimer l'habitude
+            $delete_sql = "DELETE FROM habitude WHERE id_habitude = ? AND id_utilisateur = ?";
+            $delete_stmt = $conn->prepare($delete_sql);
+            $delete_stmt->execute([$id_to_delete, $_SESSION['id_utilisateur']]);
+        }
 
-            // Vérification si l'utilisateur est bien connecté
-            if (isset($_SESSION['id_utilisateur'])) {
-                // Récupération de l'ID de l'utilisateur depuis la session
-                $id_utilisateur = $_SESSION['id_utilisateur'];
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['aj_id'])) {
+            $id_to_aj = $_POST['aj_id'];
 
-                // Requête SQL pour récupérer toutes les habitudes de l'utilisateur
-                $sql = "SELECT id_habitude, Nom_habitude, Tag, heure, Occurence, actif FROM `habitude` WHERE id_utilisateur = ? AND habitude_entreprise IS NULL;";
+            $aj_sql = "UPDATE habitude set actif = 1 WHERE id_habitude = ? AND id_utilisateur = ?";
+            $aj_stmt = $conn->prepare($aj_sql);
+            $aj_stmt->execute([$id_to_aj, $_SESSION['id_utilisateur']]);
+        }
 
-                // Préparation de la requête
-                $stmt = $conn->prepare($sql);
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ret_id'])) {
+            $id_to_ret = $_POST['ret_id'];
+
+            $ret_sql = "UPDATE habitude set actif = 0 WHERE id_habitude = ? AND id_utilisateur = ?";
+            $ret_stmt = $conn->prepare($ret_sql);
+            $ret_stmt->execute([$id_to_ret, $_SESSION['id_utilisateur']]);
+        }
+
+        // Vérification si l'utilisateur est bien connecté
+        if (isset($_SESSION['id_utilisateur'])) {
+            // Récupération de l'ID de l'utilisateur depuis la session
+            $id_utilisateur = $_SESSION['id_utilisateur'];
+        }
+        ?>
+        <div class="habitudes-wrapper">
+            <!-- Colonne Habitudes Inactives -->
+            <div class="habitudes-colonne">
+                <h2>Habitudes inactives</h2>
+                <?php
+                $sql_inactives = "SELECT id_habitude, Nom_habitude, Tag, heure, Occurence FROM `habitude` WHERE id_utilisateur = ? AND habitude_entreprise IS NULL AND actif = 0;";
+                $stmt = $conn->prepare($sql_inactives);
                 $stmt->execute([$id_utilisateur]);
+                $habitudes_inactives = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                // Récupération des résultats
-                $habitudes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                // Vérifier si des habitudes ont été trouvées
-                if ($habitudes) {
-                    // Affichage des habitudes
-                    foreach ($habitudes as $habitude) {
+                if ($habitudes_inactives) {
+                    foreach ($habitudes_inactives as $habitude) {
                         echo "<div class='habitude'>";
                         echo "<p>Nom : " . htmlspecialchars($habitude['Nom_habitude']) . "</p>";
                         echo "<p>Tag : " . htmlspecialchars($habitude['Tag']) . "</p>";
                         echo "<p>Heure : " . htmlspecialchars($habitude['heure']) . "</p>";
                         echo "<p>Occurence : " . htmlspecialchars($habitude['Occurence']) . "</p>";
-                        // Formulaire pour le bouton
+                        echo "<div class='habitude-actions'>";
                         echo "<form method='POST' onsubmit='return confirm(\"Supprimer cette habitude ?\")'>";
                         echo "<input type='hidden' name='delete_id' value='" . $habitude['id_habitude'] . "'>";
                         echo "<button type='submit'>Supprimer</button>";
                         echo "</form>";
+                        echo "<button type='button' class='edit-button' 
+                            data-id='" . $habitude['id_habitude'] . "' 
+                            data-nom='" . htmlspecialchars($habitude['Nom_habitude'], ENT_QUOTES) . "' 
+                            data-tag='" . htmlspecialchars($habitude['Tag'], ENT_QUOTES) . "' 
+                            data-heure='" . htmlspecialchars($habitude['heure'], ENT_QUOTES) . "' 
+                            data-occurence='" . htmlspecialchars($habitude['Occurence'], ENT_QUOTES) . "'>
+                            Modifier
+                            </button>";
+                        echo "<form method='POST'>";
+                        echo "<input type='hidden' name='aj_id' value='" . $habitude['id_habitude'] . "'>";
+                        echo "<button type='submit'>Activer</button>";
+                        echo "</form>";
+                        echo "</div>";
                         echo "</div>";
                     }
                 } else {
-                    echo "<p>Aucune habitude trouvée.</p>";
+                    echo "<p>Aucune habitude inactive.</p>";
                 }
-            } else {
-                // Si l'utilisateur n'est pas connecté, redirige vers la page de connexion
-                header('Location: ../../connection_utilisateur/login.php');
-                exit();
-            }
-            ?>
+                ?>
+            </div>
+
+            <!-- Colonne Habitudes Actives -->
+            <div class="habitudes-colonne">
+                <h2>Habitudes actives</h2>
+                <?php
+                $sql_actives = "SELECT id_habitude, Nom_habitude, Tag, heure, Occurence FROM `habitude` WHERE id_utilisateur = ? AND habitude_entreprise IS NULL AND actif = 1;";
+                $stmt = $conn->prepare($sql_actives);
+                $stmt->execute([$id_utilisateur]);
+                $habitudes_actives = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                if ($habitudes_actives) {
+                    foreach ($habitudes_actives as $habitude) {
+                        echo "<div class='habitude'>";
+                        echo "<p>Nom : " . htmlspecialchars($habitude['Nom_habitude']) . "</p>";
+                        echo "<p>Tag : " . htmlspecialchars($habitude['Tag']) . "</p>";
+                        echo "<p>Heure : " . htmlspecialchars($habitude['heure']) . "</p>";
+                        echo "<p>Occurence : " . htmlspecialchars($habitude['Occurence']) . "</p>";
+                        echo "<div class='habitude-actions'>";
+                        echo "<form method='POST' onsubmit='return confirm(\"Supprimer cette habitude ?\")'>";
+                        echo "<input type='hidden' name='delete_id' value='" . $habitude['id_habitude'] . "'>";
+                        echo "<button type='submit'>Supprimer</button>";
+                        echo "</form>";
+                        echo "<button type='button' class='edit-button' 
+                            data-id='" . $habitude['id_habitude'] . "' 
+                            data-nom='" . htmlspecialchars($habitude['Nom_habitude'], ENT_QUOTES) . "' 
+                            data-tag='" . htmlspecialchars($habitude['Tag'], ENT_QUOTES) . "' 
+                            data-heure='" . htmlspecialchars($habitude['heure'], ENT_QUOTES) . "' 
+                            data-occurence='" . htmlspecialchars($habitude['Occurence'], ENT_QUOTES) . "'>
+                            Modifier
+                            </button>";
+                        echo "<form method='POST'>";
+                        echo "<input type='hidden' name='ret_id' value='" . $habitude['id_habitude'] . "'>";
+                        echo "<button type='submit'>retirer</button>";
+                        echo "</form>";
+                        echo "</div>";
+                        echo "</div>";
+                    }
+                } else {
+                    echo "<p>Aucune habitude active.</p>";
+                }
+                ?>
+            </div>
         </div>
     </section>
 

@@ -13,19 +13,13 @@ footer {
   color: #000000;
 }
 
-footer {
-  position: fixed;
-  bottom: 0;
-  width: 97.5%;
-  z-index: 0;
-}
-
 header {
   position: fixed;
   top: 0;
   width: 97.5%;
-  z-index: 0;
+  z-index: 1000;
 }
+
 button {
   background-color: #4caf50;
   color: white;
@@ -185,4 +179,72 @@ td {
   width: 250px; /* Largeur fixe */
   box-sizing: border-box;
   border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.habitude button {
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.habitudes-wrapper {
+  display: flex;
+  gap: 40px;
+  padding: 20px 85px;
+  flex-wrap: wrap;
+}
+
+.habitudes-colonne {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: flex-start;
+  background-color: #d4e4e7;
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.habitudes-colonne h2 {
+  width: 100%;
+  text-align: center;
+  color: #333;
+}
+
+.habitude {
+  background-color: #e0f7fa;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: calc(50% - 10px); /* Deux par ligne avec un peu d'espace */
+  box-sizing: border-box;
+}
+
+@media screen and (max-width: 600px) {
+  .habitude {
+    width: 100%; /* Une seule carte par ligne sur mobile */
+  }
+}
+
+.habitude-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.habitude-actions button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.habitude-actions form button {
+  background-color: #e57373;
+  color: white;
+}
+
+.habitude-actions form:last-child button {
+  background-color: #64b5f6;
 }
