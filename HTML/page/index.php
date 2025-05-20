@@ -29,8 +29,8 @@
 </header>
 
 <body>
-    <section class = "space">
-        
+    <section class="space">
+
     </section>
     <section class="calendar-container">
         <div class="calendar-header">
@@ -53,6 +53,55 @@
             <tbody id="calendar"></tbody>
         </table>
     </section>
+
+    <div class="tasks">
+        <h2>Vos Tâches</h2>
+        <?php
+        include '../elements/conn.php';
+        if (isset($_SESSION['id_utilisateur'])) {
+            $id_utilisateur = $_SESSION['id_utilisateur'];
+            $stmt = $conn->prepare("SELECT id_tache, nom_tache, date_debut, durée FROM tache WHERE id_utilisateur = ?");
+            $stmt->execute([$id_utilisateur]);
+
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $dateDebut = new DateTime($row['date_debut']);
+                $dateFin = clone $dateDebut;
+                $dateFin->add(new DateInterval('P' . (int) $row['durée'] . 'D')); // P5D = période de 5 jours
+        
+                echo '<li>' . htmlspecialchars($row['nom_tache']) .
+                    ' (Début: ' . $dateDebut->format('Y-m-d') .
+                    ', Fin: ' . $dateFin->format('Y-m-d') . ')';
+                echo '</li>';
+            }
+        } else {
+            echo '<p>Veuillez vous connecter pour voir vos tâches.</p>';
+        }
+        ?>
+
+    </div>
+
+    <div class="habits">
+        <h2>Vos Habitudes</h2>
+        <?php
+        if (isset($_SESSION['id_utilisateur'])) {
+            $id_utilisateur = $_SESSION['id_utilisateur'];
+
+            // Requête pour récupérer les habitudes de l'utilisateur
+            $stmt = $conn->prepare("SELECT Nom_habitude, Occurence FROM habitude WHERE id_utilisateur = :id_utilisateur");
+            $stmt->bindParam(':id_utilisateur', $id_utilisateur);
+            $stmt->execute();
+
+            // Affichage des habitudes
+            echo '<ul>';
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                echo '<li>' . htmlspecialchars($row['Nom_habitude']) . ' (Occurence: ' . $row['Occurence'] . ')</li>';
+            }
+            echo '</ul>';
+        } else {
+            echo '<p>Veuillez vous connecter pour voir vos habitudes.</p>';
+        }
+        ?>
+    </div>
 </body>
 
 

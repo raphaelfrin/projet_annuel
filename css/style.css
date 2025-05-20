@@ -173,13 +173,18 @@ td {
 }
 
 .habitude {
-  background-color: #e0f7fa;
-  padding: 15px;
   border: 1px solid #ccc;
-  width: 250px; /* Largeur fixe */
+  border-radius: 10px;
+  padding: 15px;
+  margin: 10px;
+  max-width: 300px;
+  word-wrap: break-word; /* Coupe les mots trop longs */
+  overflow-wrap: break-word; /* Compatible avec tous les navigateurs */
+  white-space: normal; /* Permet les retours à la ligne */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   box-sizing: border-box;
-  border-radius: 8px;
-  margin-bottom: 15px;
 }
 
 .habitude button {
@@ -190,16 +195,17 @@ td {
 .habitudes-wrapper {
   display: flex;
   gap: 40px;
-  padding: 20px 85px;
+  padding: 20px 5px 20px 5px;
   flex-wrap: wrap;
+  justify-content: space-around;
 }
 
 .habitudes-colonne {
-  flex: 1;
+  flex: 1 1 300px;
   min-width: 300px;
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 10px;
   justify-content: flex-start;
   background-color: #d4e4e7;
   border-radius: 12px;
@@ -212,15 +218,6 @@ td {
   color: #333;
 }
 
-.habitude {
-  background-color: #e0f7fa;
-  padding: 15px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  width: calc(50% - 10px); /* Deux par ligne avec un peu d'espace */
-  box-sizing: border-box;
-}
-
 @media screen and (max-width: 600px) {
   .habitude {
     width: 100%; /* Une seule carte par ligne sur mobile */
@@ -229,8 +226,10 @@ td {
 
 .habitude-actions {
   display: flex;
-  gap: 10px;
-  margin-top: 10px;
+}
+.habitude-actions form {
+  flex: 1 1 auto; /* Permet aux formulaires de s’adapter à l’espace disponible */
+  min-width: 100px;
 }
 
 .habitude-actions button {

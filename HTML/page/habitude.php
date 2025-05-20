@@ -27,6 +27,16 @@
 </header>
 
 <body>
+    <?php
+    // Vérification si l'utilisateur est bien connecté
+    if (isset($_SESSION['id_utilisateur'])) {
+        // Récupération de l'ID de l'utilisateur depuis la session
+        $id_utilisateur = $_SESSION['id_utilisateur'];
+    } else {
+        echo '<p>Veuillez vous connecter pour voir vos tâches.</p>';
+        exit();
+    }
+    ?>
     <section class="space">
         <h1 class="titre_habitude">Habitudes</h1>
         <div id=" create_habits">
@@ -121,12 +131,6 @@
             $ret_sql = "UPDATE habitude set actif = 0 WHERE id_habitude = ? AND id_utilisateur = ?";
             $ret_stmt = $conn->prepare($ret_sql);
             $ret_stmt->execute([$id_to_ret, $_SESSION['id_utilisateur']]);
-        }
-
-        // Vérification si l'utilisateur est bien connecté
-        if (isset($_SESSION['id_utilisateur'])) {
-            // Récupération de l'ID de l'utilisateur depuis la session
-            $id_utilisateur = $_SESSION['id_utilisateur'];
         }
         ?>
         <div class="habitudes-wrapper">
