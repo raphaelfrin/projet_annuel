@@ -87,9 +87,9 @@
             $id_utilisateur = $_SESSION['id_utilisateur'];
 
             // Requête pour récupérer les habitudes de l'utilisateur
-            $stmt = $conn->prepare("SELECT Nom_habitude, Occurence FROM habitude WHERE id_utilisateur = :id_utilisateur");
-            $stmt->bindParam(':id_utilisateur', $id_utilisateur);
-            $stmt->execute();
+            $sql_actives = "SELECT id_habitude, Nom_habitude, Tag, heure, Occurence FROM `habitude` WHERE id_utilisateur = ? AND habitude_entreprise IS NULL AND actif = 1;";
+            $stmt = $conn->prepare($sql_actives);
+            $stmt->execute([$id_utilisateur]);
 
             // Affichage des habitudes
             echo '<ul>';
